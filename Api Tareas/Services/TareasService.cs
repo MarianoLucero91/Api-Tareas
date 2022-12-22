@@ -13,91 +13,67 @@ namespace Api_Tareas.Services
     public class TareasService : ITareasService
     {
         private readonly ITareasRepository _tareasRepository;
-        
-        TareasMapper tareasMapper = new TareasMapper();
 
 
         public TareasService(ITareasRepository tareasRepository)
         {
-            tareasRepository = _tareasRepository;
+            _tareasRepository = tareasRepository;
         }
 
         public IEnumerable<TareasDto> GetActive()
-        {            
+        {
             var task = _tareasRepository.GetActive().ToList();
 
-            if (task == null)
-            {
-                throw new Exception("Todas las tareas fueron realizadas");
-            }
-
-            var response = tareasMapper.MapManyToDto(task);
-            return response;
+            if (task == null) throw new Exception("Todas las tareas fueron realizadas");
             
+
+            TareasMapper tareasMapper = new TareasMapper();
+            return tareasMapper.MapManyToDto(task);
         }
 
         public IEnumerable<TareasDto> GetAll()
         {
             var task = _tareasRepository.GetAll().ToList();
 
-            if (task == null)
-            {
-                throw new Exception("No se encontraron tareas");
-            }
-
-            var response = tareasMapper.MapManyToDto(task);
-
-            return response;
+            if (task == null) throw new Exception("No se encontraron tareas");
+            
+            TareasMapper tareasMapper = new TareasMapper();
+            return tareasMapper.MapManyToDto(task);
         }
 
         public TareasDto GetById(int id)
         {
             var task = _tareasRepository.GetById(id);
+
+            if (task == null) throw new Exception("No se encontro ninguna tarea con este ID");
+            TareasMapper tareasMapper = new TareasMapper();
+            return tareasMapper.MapToDto(task);
+        }
+
+        public Tareas AddTarea(Tareas tarea)
+        {
+            if (tarea == null) throw new Exception("Debe ingresar una tarea a realizar");
+
+            return _tareasRepository.AddTarea(tarea);
+        }
+
+        public bool DeleteTarea(int id)
+        {
+            if (id == 0) throw new Exception("Debe especificar la tarea a eliminar");
+            _tareasRepository.DeleteTarea(id);
             
-            if (task == null)
-            {
-                throw new Exception("No se encontro ninguna tarea con este ID");
-            }
-
-            var response = tareasMapper.MapToDto(task);
-            return response;
-        }
-        
-        public TareasDto AddTarea(Tareas tarea)
-        {
-            if (tarea == null)
-            {
-                throw new Exception("Debe ingresar una tarea a realizar");
-            }
-
-            var task = _tareasRepository.AddTarea(tarea);
-           
-            var response = tareasMapper.MapToDto(task);
-            return response;
-        }
-
-        public bool DeleteTarea(Tareas tarea)
-        {
-            if (tarea == null)
-            {
-                throw new Exception("Por favor ingresar la tarea que desee eliminar");
-            }
-
-            _tareasRepository.DeleteTarea(tarea);          
             return true;
         }
-       
-        public TareasDto UpdateTarea(Tareas tarea)
+
+        public Tareas UpdateTarea(Tareas request)
         {
-            var update = _tareasRepository.GetById(tarea.Id);
-            if (update == null)
+            var tarea = _tareasRepository.GetById(request.Id);
+            if (tarea == null)
             {
                 throw new Exception("No se encontró ninguna tarea con el ID indicado");
             }
 
-            var response = _tareasRepository.UpdateTarea(update);
-            var mapped = tareasMapper.MapToDto(response);
-            return mapped;
+            return _tareasRepository.UpdateTarea(request);
         }
     }
 }

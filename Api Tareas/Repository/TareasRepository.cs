@@ -13,6 +13,10 @@ namespace Api_Tareas.Repository
     public class TareasRepository : ITareasRepository
     {
         private readonly ApplicationDbContext _dbContext;
+        public TareasRepository(ApplicationDbContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
 
         public Tareas AddTarea(Tareas tarea)
         {

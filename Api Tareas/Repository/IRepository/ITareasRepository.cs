@@ -8,7 +8,7 @@ namespace Api_Tareas.Repository.IRepository
     {
         Tareas AddTarea(Tareas tarea);
         Tareas UpdateTarea(Tareas tarea);
-        Tareas DeleteTarea(Tareas tarea);
+        bool DeleteTarea(int id);
         Tareas GetById(int id);
         IEnumerable<Tareas> GetActive();
         IEnumerable<Tareas> GetAll();

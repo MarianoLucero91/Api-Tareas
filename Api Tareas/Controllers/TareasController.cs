@@ -20,25 +20,20 @@ namespace Api_Tareas.Controllers
         }
 
         [HttpPost]
-
         public ActionResult<TareasDto> AddTarea([FromBody] Tareas tarea)
         {
-            _tareasService.AddTarea(tarea);
-
-            return Ok("La tarea se creó con éxito");
+            return _tareasService.AddTarea(tarea);
         }
 
         [HttpDelete]
-
-        public ActionResult<TareasDto> DeleteTarea([FromBody] Tareas tarea)
+        public ActionResult<TareasDto> DeleteTarea([FromRoute]int id)
         {
-            _tareasService.DeleteTarea(tarea);
+            _tareasService.DeleteTarea(id);
 
             return Ok("Tarea borrada exitosamente");
         }
 
         [HttpPut]
-
         public ActionResult<TareasDto> UpdateTarea([FromBody] Tareas tarea)
         {
             _tareasService.UpdateTarea(tarea);
@@ -47,20 +42,12 @@ namespace Api_Tareas.Controllers
         }
 
         [HttpGet]
-
-        public ActionResult<IEnumerable<TareasDto>> GetAll()
+        public IEnumerable<TareasDto> GetAll()
         {
-            var tasks = _tareasService.GetAll();
-
-            if (tasks == null)
-            {
-                throw new Exception("Ninguna tarea fue registrada");
-            }
-            return Ok(tasks);
+            return _tareasService.GetAll();
         }
 
         [HttpGet("/active")]
-
         public ActionResult<IEnumerable<TareasDto>> GetActive()
         {
             var tasks = _tareasService.GetActive();
@@ -69,17 +56,11 @@ namespace Api_Tareas.Controllers
         }
 
         [HttpGet("{tareaId}")]
-
         public ActionResult<TareasDto> GetById ([FromRoute] int id)
         {
             var taskById = _tareasService.GetById(id);
 
             return Ok(taskById);
         }
-
-
-
-
-
     }
 }
