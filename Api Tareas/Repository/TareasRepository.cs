@@ -25,16 +25,16 @@ namespace Api_Tareas.Repository
             return tarea;
         }
 
-        public Tareas DeleteTarea(Tareas tarea)
+        public bool DeleteTarea(Tareas tarea)
         {
             _dbContext.Tareas.Remove(tarea);
             _dbContext.SaveChanges();
-            return tarea;
+            return true;
         }
 
         public Tareas UpdateTarea(Tareas tarea)
         {
-            _dbContext.Tareas.Update(tarea);
+            _dbContext.Update(tarea);
             _dbContext.SaveChanges();
             return tarea;
         }

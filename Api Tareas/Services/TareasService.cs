@@ -50,17 +50,24 @@ namespace Api_Tareas.Services
             return tareasMapper.MapToDto(task);
         }
 
-        public Tareas AddTarea(Tareas tarea)
+        public TareasDto AddTarea(Tareas tarea)
         {
             if (tarea == null) throw new Exception("Debe ingresar una tarea a realizar");
 
-            return _tareasRepository.AddTarea(tarea);
+            tarea.FechaDeCreacion = DateTime.Now;
+            _tareasRepository.AddTarea(tarea);
+
+            TareasMapper tareasMapper = new TareasMapper();
+            return tareasMapper.MapToDto(tarea);
         }
 
         public bool DeleteTarea(int id)
         {
             if (id == 0) throw new Exception("Debe especificar la tarea a eliminar");
-            _tareasRepository.DeleteTarea(id);
+            var task = _tareasRepository.GetById(id);
+
+            if (task == null) throw new Exception("No se encontro la tarea a eliminar");
+            _tareasRepository.DeleteTarea(task);
             
             return true;
         }
@@ -68,12 +75,12 @@ namespace Api_Tareas.Services
         public Tareas UpdateTarea(Tareas request)
         {
             var tarea = _tareasRepository.GetById(request.Id);
-            if (tarea == null)
-            {
-                throw new Exception("No se encontró ninguna tarea con el ID indicado");
-            }
+            tarea.Realizada = request.Realizada;
+            tarea.Texto = request.Texto;
 
-            return _tareasRepository.UpdateTarea(request);
+            if (tarea == null) throw new Exception("No se encontró ninguna tarea con el ID indicado");
+
+            return _tareasRepository.UpdateTarea(tarea);
         }
     }
 }

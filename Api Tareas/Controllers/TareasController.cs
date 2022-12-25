@@ -25,7 +25,7 @@ namespace Api_Tareas.Controllers
             return _tareasService.AddTarea(tarea);
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public ActionResult<TareasDto> DeleteTarea([FromRoute]int id)
         {
             _tareasService.DeleteTarea(id);
@@ -34,11 +34,9 @@ namespace Api_Tareas.Controllers
         }
 
         [HttpPut]
-        public ActionResult<TareasDto> UpdateTarea([FromBody] Tareas tarea)
+        public Tareas UpdateTarea([FromBody] Tareas tarea)
         {
-            _tareasService.UpdateTarea(tarea);
-
-            return Ok("La tarea se ha actualizado");
+            return _tareasService.UpdateTarea(tarea);
         }
 
         [HttpGet]
@@ -47,7 +45,7 @@ namespace Api_Tareas.Controllers
             return _tareasService.GetAll();
         }
 
-        [HttpGet("/active")]
+        [HttpGet("active")]
         public ActionResult<IEnumerable<TareasDto>> GetActive()
         {
             var tasks = _tareasService.GetActive();
@@ -55,7 +53,7 @@ namespace Api_Tareas.Controllers
             return Ok(tasks);
         }
 
-        [HttpGet("{tareaId}")]
+        [HttpGet("{id}")]
         public ActionResult<TareasDto> GetById ([FromRoute] int id)
         {
             var taskById = _tareasService.GetById(id);
