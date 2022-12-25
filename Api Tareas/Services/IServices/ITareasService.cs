@@ -11,7 +11,7 @@ namespace Api_Tareas.Services.IServices
         IEnumerable<TareasDto> GetAll();
         IEnumerable<TareasDto> GetActive();
         TareasDto AddTarea(Tareas tarea);
-        TareasDto UpdateTarea(Tareas tarea);
-        bool DeleteTarea(Tareas tarea);
+        Tareas UpdateTarea(Tareas tarea);
+        bool DeleteTarea(int id);
     }
 }

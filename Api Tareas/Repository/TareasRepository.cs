@@ -13,6 +13,10 @@ namespace Api_Tareas.Repository
     public class TareasRepository : ITareasRepository
     {
         private readonly ApplicationDbContext _dbContext;
+        public TareasRepository(ApplicationDbContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
 
         public Tareas AddTarea(Tareas tarea)
         {
@@ -21,16 +25,16 @@ namespace Api_Tareas.Repository
             return tarea;
         }
 
-        public Tareas DeleteTarea(Tareas tarea)
+        public bool DeleteTarea(Tareas tarea)
         {
             _dbContext.Tareas.Remove(tarea);
             _dbContext.SaveChanges();
-            return tarea;
+            return true;
         }
 
         public Tareas UpdateTarea(Tareas tarea)
         {
-            _dbContext.Tareas.Update(tarea);
+            _dbContext.Update(tarea);
             _dbContext.SaveChanges();
             return tarea;
         }

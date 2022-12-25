@@ -1,6 +1,5 @@
 ﻿using Api_Tareas.Models;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace Api_Tareas.Repository.IRepository
 {
@@ -8,7 +7,7 @@ namespace Api_Tareas.Repository.IRepository
     {
         Tareas AddTarea(Tareas tarea);
         Tareas UpdateTarea(Tareas tarea);
-        Tareas DeleteTarea(Tareas tarea);
+        bool DeleteTarea(Tareas tarea);
         Tareas GetById(int id);
         IEnumerable<Tareas> GetActive();
         IEnumerable<Tareas> GetAll();
